@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover">
+		<title>吃丹修仙 · 属性战力计算器</title>
+		<script>
+			var enable404 = false;
+			if (enable404) window.location.href = 'index-Dark.html';
+		</script>
+		<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Ma+Shan+Zheng&display=swap"
+			rel="stylesheet">
+		<style>
+			/* ========== 全局暗色仙侠风格 ========== */
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			:root {
+				--primary-gold: #ffd700;
+				--secondary-gold: #ffed4e;
+				--dark-gold: #b8860b;
+				--immortal-blue: #00d4ff;
+				--mystic-purple: #9d4edd;
+				--demon-red: #ff006e;
+				--god-orange: #ff8500;
+				--void-black: #0a0a0f;
+				--dark-bg: #0f0f1a;
+				--darker-bg: #05050a;
+				--panel-bg: rgba(20, 25, 35, 0.95);
+				--border-glow: 0 0 15px rgba(255, 215, 0, 0.3);
+				--safe-bottom: env(safe-area-inset-bottom, 10px);
+				--announce-bg-start: #1a1a2e;
+				--announce-bg-end: #16213e;
+				--announce-accent: #ffbc5e;
+				--announce-gold-light: #ffe18a;
+				--announce-border: #c49a3f;
+			}
+
+			body {
+				font-family: 'Noto Serif SC', 'Ma Shan Zheng', 'Microsoft YaHei', serif;
+				background: var(--dark-bg);
+				color: #f0e6d0;
+				min-height: 100vh;
+				padding: 20px;
+				transition: background-color 0.5s ease;
+			}
+
+			#bg-canvas {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+				pointer-events: none;
+				opacity: 0.15;
+				background: radial-gradient(circle at 50% 50%, #1a1a2e, #05050a);
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 20px;
+				position: relative;
+				z-index: 10;
+			}
+
+			.header {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 30px;
+				padding-bottom: 20px;
+				border-bottom: 2px solid var(--primary-gold);
+				flex-wrap: wrap;
+			}
+
+			.avatar {
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				overflow: hidden;
+				margin-right: 20px;
+				border: 3px solid var(--primary-gold);
+				box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+				background: linear-gradient(145deg, #2a2a3a, #1a1a2a);
+			}
+
+			.avatar img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				opacity: 0.9;
+			}
+
+			.title {
+				font-size: 2.2rem;
+				font-weight: 900;
+				background: linear-gradient(180deg, #fff, var(--primary-gold), var(--dark-gold));
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+				letter-spacing: 8px;
+				position: relative;
+			}
+
+			.title::before,
+			.title::after {
+				content: '◆';
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--primary-gold);
+				font-size: 20px;
+				text-shadow: 0 0 10px gold;
+			}
+
+			.title::before {
+				left: -30px;
+			}
+
+			.title::after {
+				right: -30px;
+			}
+
+			@media (max-width: 768px) {
+				.title {
+					font-size: 1.6rem;
+					letter-spacing: 4px;
+				}
+
+				.title::before,
+				.title::after {
+					display: none;
+				}
+
+				.avatar {
+					margin-right: 0;
+					margin-bottom: 15px;
+				}
+
+				.header {
+					flex-direction: column;
+				}
+			}
+
+			.button-container {
+				display: flex;
+				justify-content: center;
+				gap: 20px;
+				margin-bottom: 30px;
+				flex-wrap: wrap;
+			}
+
+			.btn {
+				padding: 14px 28px;
+				background: linear-gradient(145deg, #b8860b, #ffd700, #b8860b);
+				background-size: 200% auto;
+				color: #000;
+				border: none;
+				border-radius: 50px;
+				font-size: 18px;
+				font-weight: 800;
+				cursor: pointer;
+				transition: 0.2s;
+				box-shadow: 0 8px 0 #7a5c0a, 0 10px 25px rgba(0, 0, 0, 0.5);
+				text-transform: uppercase;
+				letter-spacing: 2px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.btn:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 10px 0 #7a5c0a, 0 15px 30px black;
+			}
+
+			.btn:active {
+				transform: translateY(8px);
+				box-shadow: 0 2px 0 #7a5c0a;
+			}
+
+			.btn-outline {
+				background: transparent;
+				border: 2px solid var(--primary-gold);
+				color: var(--primary-gold);
+				box-shadow: none;
+			}
+
+			.btn-outline:hover {
+				background: rgba(255, 215, 0, 0.15);
+				box-shadow: 0 0 20px gold;
+				transform: translateY(-3px);
+			}
+
+			.content {
+				display: none;
+				background: var(--panel-bg);
+				backdrop-filter: blur(12px);
+				-webkit-backdrop-filter: blur(12px);
+				border: 1px solid rgba(255, 215, 0, 0.3);
+				border-radius: 28px;
+				padding: 2rem 1.8rem;
+				margin-top: 20px;
+				box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 215, 0, 0.05);
+				position: relative;
+			}
+
+			.content::before,
+			.content::after {
+				content: '';
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				border: 2px solid var(--primary-gold);
+			}
+
+			.content::before {
+				top: 10px;
+				left: 10px;
+				border-right: none;
+				border-bottom: none;
+			}
+
+			.content::after {
+				bottom: 10px;
+				right: 10px;
+				border-left: none;
+				border-top: none;
+			}
+
+			.content.active {
+				display: block;
+				animation: fadeIn 0.4s;
+			}
+
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(15px);
+				}
+
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.section-title {
+				font-size: 26px;
+				color: var(--primary-gold);
+				margin-bottom: 25px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				font-weight: 700;
+				border-bottom: 1px solid rgba(255, 215, 0, 0.4);
+				padding-bottom: 12px;
+			}
+
+			.function-selector {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 20px;
+				margin-bottom: 30px;
+			}
+
+			.function-btn {
+				padding: 25px 15px;
+				background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.02));
+				border: 1px solid rgba(255, 215, 0, 0.3);
+				border-radius: 16px;
+				color: #fff;
+				font-size: 18px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: 0.3s;
+				text-align: center;
+			}
+
+			.function-btn:hover {
+				border-color: var(--primary-gold);
+				background: rgba(255, 215, 0, 0.2);
+				transform: translateY(-5px);
+				box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+			}
+
+			.calc-section {
+				margin-bottom: 30px;
+				padding: 25px;
+				background: rgba(0, 0, 0, 0.3);
+				border-left: 4px solid var(--primary-gold);
+				border-radius: 12px;
+			}
+
+			.input-group {
+				margin-bottom: 20px;
+			}
+
+			.input-group label {
+				display: block;
+				margin-bottom: 8px;
+				color: var(--secondary-gold);
+				font-weight: 600;
+				font-size: 15px;
+				letter-spacing: 1px;
+			}
+
+			.input-group input,
+			.input-group select {
+				width: 100%;
+				padding: 12px 18px;
+				background: rgba(0, 0, 0, 0.6);
+				border: 1px solid #d4af37;
+				border-radius: 30px;
+				color: #ffd700;
+				font-size: 16px;
+				transition: 0.2s;
+				backdrop-filter: blur(4px);
+			}
+
+			.input-group input:focus,
+			.input-group select:focus {
+				border-color: #ffe87c;
+				box-shadow: 0 0 15px #ffd700;
+				outline: none;
+				background: rgba(30, 30, 40, 0.9);
+			}
+
+			option {
+				background: #1a1a2e;
+				color: #f0e68c;
+			}
+
+			.dual-column {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 30px;
+			}
+
+			@media (max-width: 768px) {
+				.dual-column {
+					grid-template-columns: 1fr;
+					gap: 15px;
+				}
+			}
+
+			.mode-selector {
+				display: flex;
+				gap: 10px;
+				margin-bottom: 20px;
+				background: rgba(0, 0, 0, 0.3);
+				padding: 8px;
+				border-radius: 40px;
+			}
+
+			.mode-btn {
+				flex: 1;
+				padding: 12px 18px;
+				background: transparent;
+				border: none;
+				border-radius: 40px;
+				color: rgba(255, 255, 255, 0.7);
+				font-weight: 600;
+				cursor: pointer;
+				transition: 0.2s;
+			}
+
+			.mode-btn.active {
+				background: linear-gradient(145deg, #ffd700, #b8860b);
+				color: #000;
+				box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+			}
+
+			.result {
+				margin-top: 30px;
+				padding: 25px;
+				background: rgba(0, 0, 0, 0.6);
+				border: 1px solid var(--primary-gold);
+				border-radius: 24px;
+				box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+				display: none;
+			}
+
+			.result-title {
+				font-size: 24px;
+				color: var(--primary-gold);
+				text-align: center;
+				margin-bottom: 20px;
+				text-shadow: 0 0 15px gold;
+			}
+
+			.result-item {
+				padding: 18px;
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 16px;
+				border-left: 4px solid var(--immortal-blue);
+				line-height: 1.8;
+			}
+
+			.action-buttons {
+				display: flex;
+				gap: 15px;
+				margin-top: 20px;
+			}
+
+			.copy-btn,
+			.export-btn {
+				flex: 1;
+				padding: 14px;
+				border: none;
+				border-radius: 40px;
+				font-weight: 700;
+				cursor: pointer;
+				transition: 0.2s;
+				background: linear-gradient(145deg, #00d4ff, #0066cc);
+				color: white;
+			}
+
+			.export-btn {
+				background: linear-gradient(145deg, #9d4edd, #7b2cbf);
+			}
+
+			.copy-btn:hover,
+			.export-btn:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+			}
+
+			.disclaimer {
+				text-align: center;
+				margin: 20px 0;
+				padding: 12px;
+				background: rgba(255, 0, 0, 0.15);
+				border: 1px solid rgba(255, 0, 0, 0.3);
+				border-radius: 30px;
+				color: #ff9999;
+				font-size: 13px;
+			}
+
+			/* ===== 公告弹窗 · 青玄丹霞 ===== */
+			.announcement-modal {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(8, 18, 28, 0.95);
+				backdrop-filter: blur(10px);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 9999;
+			}
+
+			.announcement-content {
+				background: linear-gradient(145deg, var(--announce-bg-start), var(--announce-bg-end));
+				border: 2px solid var(--announce-border);
+				border-radius: 36px;
+				padding: 38px 35px;
+				max-width: 560px;
+				width: 90%;
+				box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 188, 94, 0.3), 0 0 25px #ffbc5e55;
+				position: relative;
+			}
+
+			.announcement-content::before,
+			.announcement-content::after {
+				content: '✦';
+				position: absolute;
+				font-size: 24px;
+				color: var(--announce-gold-light);
+				text-shadow: 0 0 12px #ffbc5e;
+			}
+
+			.announcement-content::before {
+				top: 15px;
+				left: 20px;
+				transform: rotate(-15deg);
+			}
+
+			.announcement-content::after {
+				bottom: 15px;
+				right: 20px;
+				transform: rotate(25deg);
+			}
+
+			.announcement-title {
+				font-size: 36px;
+				font-weight: 900;
+				background: linear-gradient(180deg, #ffe49e, var(--announce-accent), #dba550);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				text-align: center;
+				margin-bottom: 20px;
+				letter-spacing: 8px;
+				text-shadow: 0 0 15px #ffb347;
+				position: relative;
+			}
+
+			.announcement-title::before,
+			.announcement-title::after {
+				content: '☯';
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				color: #ffbc5e;
+				font-size: 28px;
+				text-shadow: 0 0 20px #ffb347;
+			}
+
+			.announcement-title::before {
+				left: -10px;
+			}
+
+			.announcement-title::after {
+				right: -10px;
+			}
+
+			.announcement-text {
+				background: rgba(10, 25, 35, 0.6);
+				backdrop-filter: blur(8px);
+				border: 1px solid rgba(255, 188, 94, 0.5);
+				border-radius: 28px;
+				padding: 25px;
+				color: #f0e8d0;
+				line-height: 1.9;
+				margin-bottom: 25px;
+				box-shadow: inset 0 0 25px rgba(255, 188, 94, 0.1);
+			}
+
+			.group-card {
+				background: linear-gradient(145deg, #2c4a5e, #1f3442);
+				border: 1.5px solid #ffbc5e;
+				border-radius: 50px;
+				padding: 12px 20px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-top: 20px;
+				box-shadow: 0 0 20px #ffbc5e33;
+			}
+
+			.group-info {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.group-icon {
+				width: 42px;
+				height: 42px;
+				background: #ffbc5e22;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 24px;
+				border: 1px solid #ffbc5e;
+			}
+
+			.group-number {
+				font-size: 26px;
+				font-weight: 900;
+				color: #ffe18a;
+				letter-spacing: 3px;
+				text-shadow: 0 0 10px #ffb347;
+			}
+
+			.copy-btn-announce {
+				background: linear-gradient(145deg, #ffb347, #d48a3c);
+				border: none;
+				border-radius: 40px;
+				padding: 10px 25px;
+				color: #000;
+				font-size: 17px;
+				font-weight: 800;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				box-shadow: 0 5px 0 #7a4c1a;
+				cursor: pointer;
+				transition: 0.1s;
+				border: 1px solid #ffdd99;
+			}
+
+			.copy-btn-announce:active {
+				transform: translateY(5px);
+				box-shadow: 0 1px 0 #7a4c1a;
+			}
+
+			.announcement-buttons {
+				display: flex;
+				justify-content: center;
+				gap: 25px;
+				margin-top: 20px;
+			}
+
+			.announce-btn {
+				padding: 14px 38px;
+				border: none;
+				border-radius: 50px;
+				font-size: 19px;
+				font-weight: 900;
+				cursor: pointer;
+				transition: 0.2s;
+				letter-spacing: 4px;
+				background: linear-gradient(145deg, #ffbc5e, #d4933a);
+				color: #0a1a1a;
+				box-shadow: 0 6px 0 #7a551f, 0 0 25px #ffbc5e;
+			}
+
+			.announce-btn:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 0 #7a551f, 0 0 35px #ffbc5e;
+			}
+
+			.announce-btn-outline {
+				background: transparent;
+				border: 2px solid #ffbc5e;
+				color: #ffdd99;
+				box-shadow: none;
+				text-shadow: 0 0 10px #ffb347;
+			}
+
+			.announce-btn-outline:hover {
+				background: #ffbc5e22;
+				box-shadow: 0 0 30px #ffbc5e;
+				transform: translateY(-3px);
+			}
+
+			.settings-btn {
+				position: fixed;
+				bottom: 30px;
+				right: 30px;
+				width: 60px;
+				height: 60px;
+				background: linear-gradient(145deg, #ffd700, #b8860b);
+				border: none;
+				border-radius: 50%;
+				color: #000;
+				font-size: 30px;
+				cursor: pointer;
+				box-shadow: 0 0 30px gold;
+				z-index: 999;
+				transition: 0.3s;
+			}
+
+			.settings-btn:hover {
+				transform: rotate(90deg) scale(1.15);
+			}
+
+			.settings-panel {
+				position: fixed;
+				bottom: 100px;
+				right: 30px;
+				background: rgba(20, 25, 35, 0.95);
+				backdrop-filter: blur(16px);
+				border: 1px solid var(--primary-gold);
+				border-radius: 20px;
+				padding: 25px;
+				width: 300px;
+				display: none;
+				z-index: 1000;
+				box-shadow: 0 0 40px black;
+			}
+
+			.settings-panel.active {
+				display: block;
+			}
+
+			.bg-option {
+				width: 50px;
+				height: 35px;
+				border-radius: 8px;
+				cursor: pointer;
+				border: 2px solid transparent;
+				background: #2a2a3a;
+			}
+
+			.bg-option.active {
+				border-color: var(--primary-gold);
+			}
+
+			.copyright {
+				text-align: center;
+				margin-top: 50px;
+				padding: 25px;
+				color: var(--primary-gold);
+				border-top: 1px solid rgba(255, 215, 0, 0.3);
+				font-size: 15px;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.text-immortal-blue {
+				color: var(--immortal-blue);
+			}
+
+			.text-sm {
+				font-size: 0.875rem;
+			}
+
+			.text-red-300 {
+				color: #fca5a5;
+			}
+
+			.mb-3 {
+				margin-bottom: 0.75rem;
+			}
+
+			.w-1\/3 {
+				width: 33.333333%;
+			}
+
+			.text-yellow-400 {
+				color: #fbbf24;
+			}
+
+			.text-green-400 {
+				color: #4ade80;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="bg-canvas"></canvas>
+
+		<!-- ===== 公告弹窗 · 青玄丹霞 ===== -->
+		<div class="announcement-modal" id="announcementModal">
+			<div class="announcement-content">
+				<h2 class="announcement-title">官方提醒</h2>
+				<div class="announcement-text">
+					<p style="font-size:20px; margin-bottom:15px;"><strong style="color:#ffe18a;">✧ 收藏网址不迷路 ✧</strong>
+					</p>
+					<p style="margin-top:20px;"><strong style="color:#ffe18a; font-size:19px;">▍ 更新公告 ▍</strong></p>
+					<p><span style="color:#ffbc5e;">1.</span> 丹药数量计算</p>
+					<p><span style="color:#ffbc5e;">2.</span> 挂机池收益计算</p>
+					<p><span style="color:#ffbc5e;">3.</span> 无极魔丹计算</p>
+					<p><span style="color:#ffbc5e;">4.</span> 属性丹计算 · 含升华</p>
+					<p><span style="color:#ffbc5e;">5.</span> 战力上限计算 · 含升华</p>
+					<!-- <p><span style="color:#ffbc5e;">⚡</span> 新: 无限进位 (每满10倍指数+1)</p> -->
+					<div class="group-card">
+						<div class="group-info">
+							<span class="group-icon">🐉</span>
+							<span class="group-number">906172633</span>
+						</div>
+						<button class="copy-btn-announce" id="copyGroupNumber">
+							<span>📋</span> 复制群号
+						</button>
+					</div>
+				</div>
+				<div class="announcement-buttons">
+					<button class="announce-btn" id="agreeBtn">踏入仙途</button>
+					<button class="announce-btn announce-btn-outline" id="joinGroupBtn">加入群聊</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 主容器 -->
+		<div class="container" id="mainContainer" style="display: none;">
+			<div class="header">
+				<div class="avatar">
+					<img src="img/head.jpg" alt="道友头像">
+				</div>
+				<div class="title">吃丹修仙</div>
+			</div>
+
+			<div class="button-container">
+				<button class="btn" id="calcBtn">⚔️ 战力计算</button>
+				<button class="btn btn-outline" id="contactBtn">📞 联系作者</button>
+				<button class="btn btn-outline" id="groupBtn">👥 加入群聊</button>
+				<button class="btn" id="groupCtn">🏠 返回主页</button>
+			</div>
+
+			<!-- 功能选择 -->
+			<div class="content active" id="functionSelector">
+				<div class="section-title">📜 请选择仙法</div>
+				<div class="function-selector">
+					<button class="function-btn" data-function="function1">💊 丹药数量</button>
+					<button class="function-btn" data-function="function2">⏳ 挂机收益</button>
+					<button class="function-btn" data-function="function3">👿 无极魔丹</button>
+					<button class="function-btn" data-function="function4">⚡ 属性丹·升华</button>
+					<button class="function-btn" data-function="function5">📊 战力上限·升华</button>
+				</div>
+				<button class="btn back-btn" id="backToMain" style="width:100%; margin-top:20px;">返回主界面</button>
+			</div>
+
+			<!-- ===== 功能1：丹药数量计算 ===== -->
+			<div class="content" id="function1Content">
+				<div class="section-title">💊 丹药数量计算 · 融汇属性</div>
+				<div class="calc-section">
+					<div class="dual-column">
+						<div class="input-group"><label>当前战力</label><input type="text" id="currentPower" value="0">
+						</div>
+						<div class="input-group"><label>当前单位</label><select id="currentUnit"
+								class="unit-select"></select></div>
+						<div class="input-group"><label>目标战力</label><input type="text" id="targetPower" value="0"></div>
+						<div class="input-group"><label>目标单位</label><select id="targetUnit"
+								class="unit-select"></select></div>
+					</div>
+					<div class="dual-column">
+						<div class="input-group"><label>吃丹收益%</label><input type="number" id="danBenefit" value="0"
+								placeholder="0"></div>
+						<div class="input-group"><label>背包容量</label><input type="number" id="multiplier" value="300000"
+								placeholder="300000"></div>
+					</div>
+					<div class="dual-column">
+						<div class="input-group"><label>丹药类型</label>
+							<select id="danType" onchange="updateDanLevels()">
+								<option value="灵丹">灵丹</option>
+								<option value="仙丹">仙丹</option>
+								<option value="魔丹">魔丹</option>
+								<option value="神丹">神丹</option>
+								<option value="灾难">灾难</option>
+								<option value="毁灭">毁灭</option>
+								<option value="造化丹">造化丹</option>
+								<option value="仙蕴丹">仙蕴丹</option>
+								<option value="圣墟丹">圣墟丹</option>
+							</select>
+						</div>
+						<div class="input-group"><label>丹药等级</label><select id="danLevel"></select></div>
+					</div>
+
+					<button class="btn" id="calculateBtn" style="width:100%; margin-top:30px;">🔮 推演丹药 · 融汇属性</button>
+				</div>
+				<div class="result" id="resultSection" style="display: none;">
+					<div class="result-title">✨ 天机显现 ✨</div>
+					<div class="result-item" id="danResult"></div>
+					<div class="result-item" id="timeResult"></div>
+					<div class="disclaimer">注：本数据仅供参考，以实际游戏为准</div>
+					<div class="action-buttons">
+						<button class="copy-btn" id="copyResult1">📋 复制</button>
+						<button class="export-btn" id="exportResult1">🖼️ 导出</button>
+					</div>
+				</div>
+				<button class="btn back-btn" id="backToSelector1" style="width:100%; margin-top:20px;">返回功能选择</button>
+			</div>
+
+			<!-- ===== 功能2：挂机池收益 ===== -->
+			<div class="content" id="function2Content">
+				<div class="section-title">⏳ 挂机池收益</div>
+				<div class="mode-selector">
+					<button class="mode-btn active" data-mode="mode1">计算挂机天数</button>
+					<button class="mode-btn" data-mode="mode2">指定挂机天数</button>
+				</div>
+				<div id="mode1Content">
+					<div class="calc-section">
+						<div class="dual-column">
+							<div class="input-group"><label>当前战力</label><input type="text" id="currentPower2" value="0">
+							</div>
+							<div class="input-group"><label>当前单位</label><select id="currentUnit2"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>目标战力</label><input type="text" id="targetPower2" value="0">
+							</div>
+							<div class="input-group"><label>目标单位</label><select id="targetUnit2"
+									class="unit-select"></select></div>
+						</div>
+						<div class="dual-column">
+							<div class="input-group"><label>挂机天赋</label><select id="talentLevel">
+									<option value="false" selected>未满级</option>
+									<option value="true">已满级</option>
+								</select></div>
+							<div class="input-group"><label>初始收益</label><select id="initialGrowthRate">
+									<option value="0" selected>0-1h (0.04/0.02)</option>
+									<option value="1">1-2h (0.02/0.01)</option>
+									<option value="2">2-4h (0.01/0.005)</option>
+									<option value="4">4h+ (0.002/0.001)</option>
+								</select></div>
+						</div>
+						<button class="btn" id="calculateMode1Btn" style="width:100%;">⏳ 计算所需时间</button>
+					</div>
+				</div>
+				<div id="mode2Content" style="display:none;">
+					<div class="calc-section">
+						<div class="dual-column">
+							<div class="input-group"><label>当前战力</label><input type="text" id="currentPower2b"
+									value="0"></div>
+							<div class="input-group"><label>当前单位</label><select id="currentUnit2b"
+									class="unit-select"></select></div>
+						</div>
+						<div class="dual-column">
+							<div class="input-group"><label>挂机天赋</label><select id="talentLevel2">
+									<option value="false" selected>未满级</option>
+									<option value="true">已满级</option>
+								</select></div>
+							<div class="input-group"><label>初始收益</label><select id="initialGrowthRate2">
+									<option value="0" selected>0-1h</option>
+									<option value="1">1-2h</option>
+									<option value="2">2-4h</option>
+									<option value="4">4h+</option>
+								</select></div>
+						</div>
+						<div class="input-group"><label>挂机时长</label>
+							<div style="display:flex; gap:10px;"><input type="number" id="days2" placeholder="天"
+									class="w-1/3" value="0"><input type="number" id="hours2" placeholder="时"
+									class="w-1/3" value="0"><input type="number" id="minutes2" placeholder="分"
+									class="w-1/3" value="0"></div>
+						</div>
+						<button class="btn" id="calculateMode2Btn" style="width:100%;">⚡ 计算到达战力</button>
+					</div>
+				</div>
+				<div class="result" id="resultSection2" style="display: none;">
+					<div class="result-title">✨ 推演结果</div>
+					<div class="result-item" id="poolResult"></div>
+					<div class="disclaimer">注：本数据仅供参考</div>
+					<div class="action-buttons"><button class="copy-btn" id="copyResult2">📋 复制</button><button
+							class="export-btn" id="exportResult2">🖼️ 导出</button></div>
+				</div>
+				<button class="btn back-btn" id="backToSelector2" style="width:100%; margin-top:20px;">返回功能选择</button>
+			</div>
+
+			<!-- ===== 功能3：无极魔丹 ===== -->
+			<div class="content" id="function3Content">
+				<div class="section-title">👿 无极魔丹</div>
+				<div class="mode-selector">
+					<button class="mode-btn active" data-mode="mode1">计算所需数量</button>
+					<button class="mode-btn" data-mode="mode2">指定魔丹数量</button>
+				</div>
+				<div id="mode3Content1">
+					<div class="calc-section">
+						<div class="dual-column">
+							<div class="input-group"><label>当前战力</label><input type="text" id="currentPower3" value="0">
+							</div>
+							<div class="input-group"><label>当前单位</label><select id="currentUnit3"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>目标战力</label><input type="text" id="targetPower3" value="0">
+							</div>
+							<div class="input-group"><label>目标单位</label><select id="targetUnit3"
+									class="unit-select"></select></div>
+						</div>
+						<p class="text-sm text-red-300 mb-3">每颗魔丹 +0.01% (复利)</p>
+						<button class="btn" id="calculateFunction3Btn" style="width:100%;">🧮 计算所需魔丹</button>
+					</div>
+				</div>
+				<div id="mode3Content2" style="display:none;">
+					<div class="calc-section">
+						<div class="dual-column">
+							<div class="input-group"><label>当前战力</label><input type="text" id="currentPower3b"
+									value="0"></div>
+							<div class="input-group"><label>当前单位</label><select id="currentUnit3b"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>魔丹数量</label><input type="number" id="wujiPillsCount"
+									value="0"></div>
+						</div>
+						<button class="btn" id="calculateFunction3bBtn" style="width:100%;">🔥 计算吃丹后战力</button>
+					</div>
+				</div>
+				<div class="result" id="resultSection3" style="display: none;">
+					<div class="result-title">✨ 魔道推演</div>
+					<div class="result-item" id="wujiResult"></div>
+					<div class="action-buttons"><button class="copy-btn" id="copyResult3">📋 复制</button><button
+							class="export-btn" id="exportResult3">🖼️ 导出</button></div>
+				</div>
+				<button class="btn back-btn" id="backToSelector3" style="width:100%; margin-top:20px;">返回功能选择</button>
+			</div>
+
+			<!-- ===== 功能4：属性丹计算（独立）===== -->
+			<div class="content" id="function4Content">
+				<div class="section-title">⚡ 属性丹 · 完整计算（含升华）</div>
+				<div class="calc-section">
+					<div class="dual-column">
+						<div>
+							<h4 class="text-yellow-400 mb-2">❤️ 生命</h4>
+							<div class="input-group"><label>基础生命</label><input type="text" id="baseHealth4" value="0">
+							</div>
+							<div class="input-group"><label>单位</label><select id="baseHealthUnit4"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>加成%</label><input type="number" id="healthBonus4" value="0">
+							</div>
+							<div class="input-group"><label>提升%</label><input type="number" id="healthIncrease4"
+									value="0"></div>
+							<div class="input-group"><label>增幅%</label><input type="number" id="healthAmplify4"
+									value="0"></div>
+							<div class="input-group"><label>升华%</label><input type="number" id="healthSublime4"
+									value="0"></div>
+						</div>
+						<div>
+							<h4 class="text-yellow-400 mb-2">⚔️ 攻击</h4>
+							<div class="input-group"><label>基础攻击</label><input type="text" id="baseAttack4" value="0">
+							</div>
+							<div class="input-group"><label>单位</label><select id="baseAttackUnit4"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>加成%</label><input type="number" id="attackBonus4" value="0">
+							</div>
+							<div class="input-group"><label>提升%</label><input type="number" id="attackIncrease4"
+									value="0"></div>
+							<div class="input-group"><label>增幅%</label><input type="number" id="attackAmplify4"
+									value="0"></div>
+							<div class="input-group"><label>升华%</label><input type="number" id="attackSublime4"
+									value="0"></div>
+						</div>
+					</div>
+					<div class="dual-column" style="margin-top: 20px;">
+						<div class="input-group"><label>属性丹类型</label><select id="attributePillType">
+								<option value="0.03">混沌boss丹 +3%</option>
+								<option value="0.06">鸿蒙boss丹 +6%</option>
+								<option value="0.1">上品 +10%</option>
+								<option value="0.15">极品 +15%</option>
+								<option value="0.4">仙品 +40%</option>
+								<option value="0.7">圣品 +70%</option>
+								<option value="1.0">神王 +100%</option>
+								<option value="2.0">超级 +200%</option>
+							</select>
+						</div>
+						<div class="input-group" style="display: flex; gap: 10px; align-items: flex-end;">
+							<div style="flex: 2;">
+								<label>目标战力</label>
+								<input type="text" id="targetPower4" value="0">
+							</div>
+							<div style="flex: 1;">
+								<label>单位</label>
+								<select id="targetUnit4" class="unit-select"></select>
+							</div>
+						</div>
+					</div>
+					<button class="btn" id="calculateFunction4Btn" style="width:100%; margin-top: 20px;">⚗️
+						计算所需属性丹</button>
+				</div>
+				<div class="result" id="resultSection4" style="display: none;">
+					<div class="result-title">✨ 属性推演</div>
+					<div class="result-item" id="attributeResult"></div>
+					<div class="action-buttons"><button class="copy-btn" id="copyResult4">📋 复制</button><button
+							class="export-btn" id="exportResult4">🖼️ 导出</button></div>
+				</div>
+				<button class="btn back-btn" id="backToSelector4" style="width:100%; margin-top:20px;">返回功能选择</button>
+			</div>
+
+			<!-- ===== 功能5：战力上限（含升华）===== -->
+			<div class="content" id="function5Content">
+				<div class="section-title">📊 战力上限 · 完整计算（含升华）</div>
+				<div class="calc-section">
+					<div class="dual-column">
+						<div>
+							<h4 class="text-green-400">生命基础</h4>
+							<div class="input-group"><label>基础生命</label><input type="text" id="baseHealth5" value="0">
+							</div>
+							<div class="input-group"><label>单位</label><select id="baseHealthUnit5"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>加成%</label><input type="number" id="healthBonus5" value="0">
+							</div>
+							<div class="input-group"><label>提升%</label><input type="number" id="healthIncrease5"
+									value="0">
+							</div>
+							<div class="input-group"><label>增幅%</label><input type="number" id="healthAmplify5"
+									value="0">
+							</div>
+							<div class="input-group"><label>升华%</label><input type="number" id="healthSublime5"
+									value="0">
+							</div>
+						</div>
+						<div>
+							<h4 class="text-green-400">攻击基础</h4>
+							<div class="input-group"><label>基础攻击</label><input type="text" id="baseAttack5" value="0">
+							</div>
+							<div class="input-group"><label>单位</label><select id="baseAttackUnit5"
+									class="unit-select"></select></div>
+							<div class="input-group"><label>加成%</label><input type="number" id="attackBonus5" value="0">
+							</div>
+							<div class="input-group"><label>提升%</label><input type="number" id="attackIncrease5"
+									value="0">
+							</div>
+							<div class="input-group"><label>增幅%</label><input type="number" id="attackAmplify5"
+									value="0">
+							</div>
+							<div class="input-group"><label>升华%</label><input type="number" id="attackSublime5"
+									value="0">
+							</div>
+						</div>
+					</div>
+					<button class="btn" id="calculateFunction5Btn" style="width:100%;">📈 计算战力上限</button>
+				</div>
+				<div class="result" id="resultSection5" style="display: none;">
+					<div class="result-title">✨ 战力推演</div>
+					<div class="result-item" id="powerLimitResult"></div>
+					<div class="action-buttons"><button class="copy-btn" id="copyResult5">📋 复制</button><button
+							class="export-btn" id="exportResult5">🖼️ 导出</button></div>
+				</div>
+				<button class="btn back-btn" id="backToSelector5" style="width:100%; margin-top:20px;">返回功能选择</button>
+			</div>
+
+			<div class="copyright">
+				<footer>此助手永久免费使用 · 官方吃丹修仙战力计算<br>Copyright © 2026 · 群聊906172633</footer>
+			</div>
+		</div>
+
+		<!-- 设置按钮 & 面板 -->
+		<button class="settings-btn" id="settingsBtn">⚙️</button>
+		<div class="settings-panel" id="settingsPanel">
+			<div class="settings-title">⚙️ 个性化设置</div>
+			<div class="settings-option"><label>上传背景</label><input type="file" id="bgUpload" accept="image/*"></div>
+			<div class="settings-option">
+				<label>默认背景</label>
+				<div class="default-bg-options" style="display:flex; gap:8px;">
+					<div class="bg-option active" data-bg="dark1" style="background: #1a1a2e;"></div>
+					<div class="bg-option" data-bg="dark2" style="background: #16213e;"></div>
+					<div class="bg-option" data-bg="dark3" style="background: #0f0f1a;"></div>
+					<div class="bg-option" data-bg="dark4" style="background: #1e1e2f;"></div>
+					<div class="bg-option" data-bg="dark5" style="background: #2a2a3a;"></div>
+				</div>
+			</div>
+			<button class="btn" id="resetBgBtn" style="width:100%; padding:10px;">重置背景</button>
+		</div>
+
+		<script>
+			// ==================== ★ 全局数据与工具函数（无限科学计数法）★ ====================
+			const units = [{
+					name: '万',
+					val: 1e4
+				},
+				{
+					name: '亿',
+					val: 1e8
+				},
+				{
+					name: '兆',
+					val: 1e12
+				},
+				{
+					name: '京',
+					val: 1e16
+				},
+				{
+					name: '垓',
+					val: 1e20
+				},
+				{
+					name: '秭',
+					val: 1e24
+				},
+				{
+					name: '穰',
+					val: 1e28
+				},
+				{
+					name: '沟',
+					val: 1e32
+				},
+				{
+					name: '涧',
+					val: 1e36
+				},
+				{
+					name: '正',
+					val: 1e40
+				},
+				{
+					name: '载',
+					val: 1e44
+				},
+				{
+					name: '极',
+					val: 1e48
+				},
+				{
+					name: '恒河沙',
+					val: 1e52
+				},
+				{
+					name: '阿僧祗',
+					val: 1e56
+				},
+				{
+					name: '那由他',
+					val: 1e60
+				},
+				{
+					name: '不可思议',
+					val: 1e64
+				},
+				{
+					name: '无量',
+					val: 1e68
+				},
+				{
+					name: '大数',
+					val: 1e72
+				},
+				{
+					name: '无敌',
+					val: 1e76
+				},
+				{
+					name: '御天',
+					val: 1e100
+				}
+			];
+			const unitMap = {};
+			units.forEach(u => unitMap[u.name] = u.val);
+
+			// ★★★ 解析科学计数法输入（支持 E无敌+78 格式）★★★
+			function parsePowerValue(valueStr, unitStr) {
+				if (!valueStr) return 0;
+
+				let value = valueStr.toString().trim();
+				let num = 0;
+
+				// 处理格式：1.00E无敌+76
+				const match = value.match(/^([0-9.]+)E(无敌|御天)\+(\d+)$/);
+				if (match) {
+					let coefficient = parseFloat(match[1]);
+					let unit = match[2];
+					let exponent = parseInt(match[3]);
+					num = coefficient * Math.pow(10, exponent);
+					return num;
+				}
+
+				// 处理科学计数法格式：1.48E+78 或 1.48E78
+				if (value.includes('E+') || value.includes('E')) {
+					let parts = value.split('E');
+					let coefficient = parseFloat(parts[0]);
+					let exponent = parseInt(parts[1].replace('+', ''));
+					num = coefficient * Math.pow(10, exponent);
+				}
+				// 处理普通数字
+				else {
+					num = parseFloat(value) || 0;
+				}
+
+				// 乘以单位（如果输入的是普通数字+单位下拉框）
+				let unitVal = parseFloat(unitStr) || 1;
+				return num * unitVal;
+			}
+
+			// 修改 getRaw 使用新的解析函数
+			function getRaw(valId, unitId) {
+				let valueStr = document.getElementById(valId)?.value || '0';
+				let unitStr = document.getElementById(unitId)?.value || '1';
+				return parsePowerValue(valueStr, unitStr);
+			}
+
+			// ★★★ 无限科学计数法格式化函数 ★★★
+			function formatPower(num) {
+				if (num === 0) return '0';
+
+				// 处理 >= 御天 (1e100)
+				if (num >= 1e100) {
+					let exponent = Math.floor(Math.log10(num));
+					let coefficient = num / Math.pow(10, exponent);
+
+					while (coefficient >= 10) {
+						coefficient /= 10;
+						exponent++;
+					}
+
+					let coeffStr = coefficient.toFixed(2);
+					return coeffStr + 'E御天+' + exponent;
+				}
+
+				// 处理无敌 (1e76 - 1e100-1)
+				if (num >= 1e76) {
+					let exponent = Math.floor(Math.log10(num));
+					let coefficient = num / Math.pow(10, exponent);
+
+					while (coefficient >= 10) {
+						coefficient /= 10;
+						exponent++;
+					}
+
+					let coeffStr = coefficient.toFixed(2);
+					return coeffStr + 'E无敌+' + exponent;
+				}
+
+				// 处理大数阶段 (1e72 - 1e76-1)
+				if (num >= 1e72) {
+					let dashuVal = num / 1e72;
+					if (dashuVal >= 10000) {
+						return formatPower(num);
+					}
+					return dashuVal.toFixed(2) + '大数';
+				}
+
+				// 处理大数以下的无量等
+				if (num >= 1e68) {
+					let wuliangVal = num / 1e68;
+					if (wuliangVal >= 10000) {
+						return formatPower(num);
+					}
+					return wuliangVal.toFixed(2) + '无量';
+				}
+
+				if (num >= 1e64) {
+					let bukesiyiVal = num / 1e64;
+					if (bukesiyiVal >= 10000) {
+						return formatPower(num);
+					}
+					return bukesiyiVal.toFixed(2) + '不可思议';
+				}
+
+				// 普通单位（从大到小）
+				for (let i = units.length - 1; i >= 0; i--) {
+					const unitVal = units[i].val;
+					if (num >= unitVal) {
+						const value = num / unitVal;
+						if (value >= 1000 && i < units.length - 1) {
+							return formatPower(num);
+						}
+						return value.toFixed(2).replace(/\.0+$/, '') + units[i].name;
+					}
+				}
+				return num.toFixed(2);
+			}
+
+			const danData = [{
+					type: "灵丹",
+					level: 1,
+					attack: "1"
+				}, {
+					type: "灵丹",
+					level: 2,
+					attack: "4"
+				}, {
+					type: "灵丹",
+					level: 3,
+					attack: "8"
+				}, {
+					type: "灵丹",
+					level: 4,
+					attack: "16"
+				}, {
+					type: "灵丹",
+					level: 5,
+					attack: "32"
+				}, {
+					type: "灵丹",
+					level: 6,
+					attack: "64"
+				}, {
+					type: "灵丹",
+					level: 7,
+					attack: "128"
+				}, {
+					type: "灵丹",
+					level: 8,
+					attack: "256"
+				}, {
+					type: "灵丹",
+					level: 9,
+					attack: "512"
+				}, {
+					type: "灵丹",
+					level: 10,
+					attack: "1000"
+				},
+				{
+					type: "仙丹",
+					level: 1,
+					attack: "0.2万"
+				}, {
+					type: "仙丹",
+					level: 2,
+					attack: "0.4万"
+				}, {
+					type: "仙丹",
+					level: 3,
+					attack: "0.8万"
+				}, {
+					type: "仙丹",
+					level: 4,
+					attack: "1.6万"
+				}, {
+					type: "仙丹",
+					level: 5,
+					attack: "3.2万"
+				}, {
+					type: "仙丹",
+					level: 6,
+					attack: "6.4万"
+				}, {
+					type: "仙丹",
+					level: 7,
+					attack: "12.8万"
+				}, {
+					type: "仙丹",
+					level: 8,
+					attack: "25.6万"
+				}, {
+					type: "仙丹",
+					level: 9,
+					attack: "51.2万"
+				}, {
+					type: "仙丹",
+					level: 10,
+					attack: "100万"
+				}, {
+					type: "仙丹",
+					level: 11,
+					attack: "200万"
+				}, {
+					type: "仙丹",
+					level: 12,
+					attack: "400万"
+				}, {
+					type: "仙丹",
+					level: 13,
+					attack: "800万"
+				}, {
+					type: "仙丹",
+					level: 14,
+					attack: "1600万"
+				},
+				{
+					type: "魔丹",
+					level: 1,
+					attack: "1.6亿"
+				}, {
+					type: "魔丹",
+					level: 2,
+					attack: "3.2亿"
+				}, {
+					type: "魔丹",
+					level: 3,
+					attack: "6.4亿"
+				}, {
+					type: "魔丹",
+					level: 4,
+					attack: "12.8亿"
+				}, {
+					type: "魔丹",
+					level: 5,
+					attack: "200亿"
+				}, {
+					type: "魔丹",
+					level: 6,
+					attack: "30亿"
+				}, {
+					type: "魔丹",
+					level: 7,
+					attack: "60亿"
+				},
+				{
+					type: "神丹",
+					level: 1,
+					attack: "120亿"
+				}, {
+					type: "神丹",
+					level: 2,
+					attack: "200亿"
+				}, {
+					type: "神丹",
+					level: 3,
+					attack: "400亿"
+				}, {
+					type: "神丹",
+					level: 4,
+					attack: "600亿"
+				}, {
+					type: "神丹",
+					level: 5,
+					attack: "1000亿"
+				}, {
+					type: "神丹",
+					level: 6,
+					attack: "1600亿"
+				}, {
+					type: "神丹",
+					level: 7,
+					attack: "0.64兆"
+				}, {
+					type: "神丹",
+					level: 8,
+					attack: "0.4兆"
+				}, {
+					type: "神丹",
+					level: 9,
+					attack: "0.7兆"
+				}, {
+					type: "神丹",
+					level: 10,
+					attack: "1.2兆"
+				}, {
+					type: "神丹",
+					level: 11,
+					attack: "2兆"
+				}, {
+					type: "神丹",
+					level: 12,
+					attack: "3兆"
+				}, {
+					type: "神丹",
+					level: 13,
+					attack: "4兆"
+				}, {
+					type: "神丹",
+					level: 14,
+					attack: "5兆"
+				},
+				{
+					type: "灾难",
+					level: 1,
+					attack: "8兆"
+				}, {
+					type: "灾难",
+					level: 2,
+					attack: "12兆"
+				}, {
+					type: "灾难",
+					level: 3,
+					attack: "20兆"
+				}, {
+					type: "灾难",
+					level: 4,
+					attack: "30兆"
+				}, {
+					type: "灾难",
+					level: 5,
+					attack: "50兆"
+				}, {
+					type: "灾难",
+					level: 6,
+					attack: "80兆"
+				},
+				{
+					type: "毁灭",
+					level: 1,
+					attack: "120兆"
+				}, {
+					type: "毁灭",
+					level: 2,
+					attack: "200兆"
+				}, {
+					type: "毁灭",
+					level: 3,
+					attack: "300兆"
+				}, {
+					type: "毁灭",
+					level: 4,
+					attack: "500兆"
+				}, {
+					type: "毁灭",
+					level: 5,
+					attack: "800兆"
+				}, {
+					type: "毁灭",
+					level: 6,
+					attack: "1200兆"
+				}, {
+					"type": "毁灭",
+					"level": 7,
+					"attack": "0.2京"
+				}, {
+					"type": "毁灭",
+					"level": 8,
+					"attack": "0.4京"
+				}, {
+					type: "造化丹",
+					level: 1,
+					attack: "0.8京"
+				}, {
+					type: "造化丹",
+					level: 2,
+					attack: "1.2京"
+				}, {
+					type: "造化丹",
+					level: 3,
+					attack: "2京"
+				}, {
+					type: "造化丹",
+					level: 4,
+					attack: "4京"
+				}, {
+					type: "造化丹",
+					level: 5,
+					attack: "80京"
+				}, {
+					type: "造化丹",
+					level: 6,
+					attack: "120京"
+				}, {
+					type: "造化丹",
+					level: 7,
+					attack: "480京"
+				},
+				{
+					type: "仙蕴丹",
+					level: 1,
+					attack: "0.288垓"
+				}, {
+					type: "仙蕴丹",
+					level: 2,
+					attack: "0.576垓"
+				}, {
+					type: "仙蕴丹",
+					level: 3,
+					attack: "1.15垓"
+				}, {
+					type: "仙蕴丹",
+					level: 4,
+					attack: "2.3垓"
+				}, {
+					type: "仙蕴丹",
+					level: 5,
+					attack: "4.61垓"
+				}, {
+					type: "仙蕴丹",
+					level: 6,
+					attack: "13.8垓"
+				}, {
+					type: "仙蕴丹",
+					level: 7,
+					attack: "82.9垓"
+				}, {
+					type: "仙蕴丹",
+					level: 8,
+					attack: "498垓"
+				},
+				{
+					type: "仙蕴丹",
+					level: 9,
+					attack: "0.248秭"
+				}, {
+					type: "仙蕴丹",
+					level: 10,
+					attack: "1.24秭"
+				}, {
+					type: "仙蕴丹",
+					level: 11,
+					attack: "9.95秭"
+				}, {
+					type: "仙蕴丹",
+					level: 12,
+					attack: "99.5秭"
+				}, {
+					type: "仙蕴丹",
+					level: 13,
+					attack: "995秭"
+				},
+				{
+					type: "圣墟丹",
+					level: 1,
+					attack: "0.995秭"
+				}, {
+					type: "圣墟丹",
+					level: 2,
+					attack: "7.96秭"
+				}, {
+					type: "圣墟丹",
+					level: 3,
+					attack: "39.8秭"
+				}, {
+					type: "圣墟丹",
+					level: 4,
+					attack: "398秭"
+				}, {
+					type: "圣墟丹",
+					level: 5,
+					attack: "3981秭"
+				}, {
+					type: "圣墟丹",
+					level: 6,
+					attack: "3.98穰"
+				}, {
+					type: "圣墟丹",
+					level: 7,
+					attack: "31.85穰"
+				}, {
+					type: "圣墟丹",
+					level: 8,
+					attack: "254.8穰"
+				}, {
+					type: "圣墟丹",
+					level: 9,
+					attack: "2038穰"
+				}
+			];
+
+			function parseAttackToBase(attackStr) {
+				if (!attackStr) return 0;
+				const match = attackStr.match(/^([0-9.]+)([万亿兆京垓秭穰沟涧正载极恒河沙阿僧祗那由他不可思议无量大数无敌御天]?)$/);
+				if (!match) return parseFloat(attackStr) || 0;
+				const num = parseFloat(match[1]),
+					unit = match[2];
+				const unitToWan = {
+					'': 10000,
+					'万': 10000,
+					'亿': 1e8,
+					'兆': 1e12,
+					'京': 1e16,
+					'垓': 1e20,
+					'秭': 1e24,
+					'穰': 1e28,
+					'沟': 1e32,
+					'涧': 1e36,
+					'正': 1e40,
+					'载': 1e44,
+					'极': 1e48,
+					'恒河沙': 1e52,
+					'阿僧祗': 1e56,
+					'那由他': 1e60,
+					'不可思议': 1e64,
+					'无量': 1e68,
+					'大数': 1e72,
+					'无敌': 1e76,
+					'御天': 1e100
+				};
+				return num * (unitToWan[unit] || 1);
+			}
+			const danMap = {};
+			danData.forEach(d => {
+				if (!danMap[d.type]) danMap[d.type] = [];
+				danMap[d.type].push({
+					level: d.level,
+					attackRaw: d.attack,
+					attackBase: parseAttackToBase(d.attack)
+				});
+			});
+
+			window.updateDanLevels = function() {
+				const type = document.getElementById('danType').value;
+				const levelSelect = document.getElementById('danLevel');
+				if (!danMap[type]) return;
+				levelSelect.innerHTML = danMap[type].map(d =>
+					`<option value="${d.attackBase}">${type}${d.level}阶 (${d.attackRaw})</option>`).join('');
+			};
+
+			function initUnitSelects() {
+				const selects = document.querySelectorAll(
+					'.unit-select, #currentUnit, #targetUnit, #currentUnit2, #targetUnit2, #currentUnit2b, #currentUnit3, #targetUnit3, #currentUnit3b, #baseHealthUnit4, #baseAttackUnit4, #targetUnit4, #baseHealthUnit5, #baseAttackUnit5'
+				);
+				const html = units.map(u => `<option value="${u.val}">${u.name}</option>`).join('');
+				selects.forEach(s => {
+					if (s) s.innerHTML = html;
+				});
+			}
+
+			function getGrowthRate(rateKey, talent) {
+				const rules = {
+					false: {
+						0: 0.02,
+						1: 0.01,
+						2: 0.005,
+						4: 0.001
+					},
+					true: {
+						0: 0.04,
+						1: 0.02,
+						2: 0.01,
+						4: 0.002
+					}
+				};
+				return rules[talent][rateKey];
+			}
+
+			function calculatePoolTime(cur, tar, talent, initRate) {
+				let power = cur,
+					sec = 0,
+					key = parseInt(initRate),
+					idx = key === 4 ? 3 : key;
+				const rates = talent ? [0.0004, 0.0002, 0.0001, 0.00002] : [0.0002, 0.0001, 0.00005, 0.00001];
+				while (power < tar && sec < 31536000) {
+					power *= (1 + rates[idx]);
+					sec += 5;
+					let h = sec / 3600;
+					if (h >= 4) idx = 3;
+					else if (h >= 2) idx = 2;
+					else if (h >= 1) idx = 1;
+				}
+				return {
+					days: Math.floor(sec / 86400),
+					hours: Math.floor((sec % 86400) / 3600),
+					minutes: Math.floor((sec % 3600) / 60),
+					seconds: Math.floor(sec % 60)
+				};
+			}
+
+			function calculatePoolPower(cur, totalSec, talent, initRate) {
+				let power = cur,
+					sec = 0,
+					key = parseInt(initRate),
+					idx = key === 4 ? 3 : key;
+				const rates = talent ? [0.0004, 0.0002, 0.0001, 0.00002] : [0.0002, 0.0001, 0.00005, 0.00001];
+				while (sec < totalSec) {
+					power *= (1 + rates[idx]);
+					sec += 5;
+					let h = sec / 3600;
+					if (h >= 4) idx = 3;
+					else if (h >= 2) idx = 2;
+					else if (h >= 1) idx = 1;
+				}
+				return power;
+			}
+
+			window.exportToImage = function(elementId, title) {
+				const el = document.getElementById(elementId);
+				if (!el) return;
+				html2canvas(el, {
+					scale: 1.8,
+					backgroundColor: '#0a0a0f'
+				}).then(canvas => {
+					const link = document.createElement('a');
+					link.download = `修仙_${title}_${Date.now()}.png`;
+					link.href = canvas.toDataURL();
+					link.click();
+				});
+			};
+
+			window.onload = function() {
+				initUnitSelects();
+				updateDanLevels();
+				initCanvas();
+
+				document.getElementById('agreeBtn').onclick = () => {
+					document.getElementById('announcementModal').style.display = 'none';
+					document.getElementById('mainContainer').style.display = 'block';
+				};
+				document.getElementById('joinGroupBtn').onclick = () => window.open('https://qm.qq.com/q/EWuS3pj4gS',
+					'_blank');
+				document.getElementById('copyGroupNumber').onclick = () => {
+					navigator.clipboard.writeText('906172633').then(() => alert('✨ 群号已复制！欢迎道友飞升～'));
+				};
+
+				document.getElementById('calcBtn').onclick = () => hideAllContent('functionSelector');
+				document.getElementById('contactBtn').onclick = () => window.open('https://qm.qq.com/q/EWuS3pj4gS',
+					'_blank');
+				document.getElementById('groupBtn').onclick = () => window.open('https://qm.qq.com/q/EWuS3pj4gS', '_blank');
+				document.getElementById('groupCtn').onclick = () => window.location.href = 'index-Dark.html';
+				document.getElementById('backToMain').onclick = () => hideAllContent('functionSelector');
+
+				document.querySelectorAll('.function-btn').forEach(btn => {
+					btn.onclick = (e) => {
+						const id = e.currentTarget.dataset.function;
+						hideAllContent(id + 'Content');
+					};
+				});
+				for (let i = 1; i <= 5; i++) document.getElementById(`backToSelector${i}`).onclick = () => hideAllContent(
+					'functionSelector');
+
+				document.querySelectorAll('#function2Content .mode-btn').forEach((btn) => {
+					btn.onclick = function() {
+						document.querySelectorAll('#function2Content .mode-btn').forEach(b => b.classList.remove(
+							'active'));
+						this.classList.add('active');
+						document.getElementById('mode1Content').style.display = this.dataset.mode === 'mode1' ?
+							'block' : 'none';
+						document.getElementById('mode2Content').style.display = this.dataset.mode === 'mode2' ?
+							'block' : 'none';
+					};
+				});
+				document.querySelectorAll('#function3Content .mode-btn').forEach((btn) => {
+					btn.onclick = function() {
+						document.querySelectorAll('#function3Content .mode-btn').forEach(b => b.classList.remove(
+							'active'));
+						this.classList.add('active');
+						document.getElementById('mode3Content1').style.display = this.dataset.mode === 'mode1' ?
+							'block' : 'none';
+						document.getElementById('mode3Content2').style.display = this.dataset.mode === 'mode2' ?
+							'block' : 'none';
+					};
+				});
+
+				// ===== 丹药数量计算（修复版）- 每次点击都会刷新结果 =====
+				document.getElementById('calculateBtn').onclick = function() {
+					// 获取输入值
+					const cur = getRaw('currentPower', 'currentUnit');
+					const tar = getRaw('targetPower', 'targetUnit');
+
+					// 验证输入
+					if (isNaN(cur) || isNaN(tar)) {
+						alert('请输入有效的战力数值');
+						return;
+					}
+					if (tar <= cur) {
+						alert('目标必须大于当前');
+						return;
+					}
+
+					// 获取丹药基础值
+					const bonus = parseFloat(document.getElementById('danBenefit').value) || 0;
+					let baseValue = parseFloat(document.getElementById('danLevel').value) || 0;
+
+					// 计算实际单颗增加值（吃丹收益加成）
+					let actualValue = baseValue * (1 + bonus / 100);
+
+					// 计算所需数量
+					const diff = tar - cur;
+					let count = Math.ceil(diff / actualValue);
+
+					// 背包时间计算 - 修正为每5秒生产 cap*10 个
+					const cap = parseFloat(document.getElementById('multiplier').value) || 0;
+					let timeStr = '';
+					if (cap > 0) {
+						// 每5秒生产 cap*10 个，所以每秒生产 (cap*10)/5 = cap*2 个
+						// 总秒数 = count / (cap*2)
+						let sec = count / (cap * 2);
+						let d = Math.floor(sec / 86400),
+							h = Math.floor((sec % 86400) / 3600),
+							m = Math.floor((sec % 3600) / 60),
+							s = Math.floor(sec % 60);
+						timeStr = `需${d}天${h}时${m}分${s}秒`;
+					}
+
+					// 获取丹药信息
+					let danLevelText = document.getElementById('danLevel').selectedOptions[0].text;
+
+					// 清空并设置新结果（每次点击都会刷新）
+					document.getElementById('danResult').innerHTML =
+						`当前战力: ${formatPower(cur)}<br>` +
+						`目标战力: ${formatPower(tar)}<br>` +
+						`丹药: ${danLevelText}<br>` +
+						`需要: <span style="color:gold;font-size:28px;">${count.toLocaleString()}</span> 颗`;
+
+					document.getElementById('timeResult').innerHTML = cap > 0 ?
+						`背包速率: ${(cap*10).toLocaleString()}个/5秒 → ${timeStr}` : '';
+
+					// 确保结果区域显示
+					document.getElementById('resultSection').style.display = 'block';
+				};
+
+				document.getElementById('copyResult1').onclick = () => {
+					let resultText = document.getElementById('danResult').innerText + '\n' +
+						document.getElementById('timeResult').innerText;
+					navigator.clipboard.writeText('丹药结果：\n' + resultText).then(() => {
+						alert('✅ 复制成功！');
+					}).catch(() => {
+						alert('❌ 复制失败，请手动复制');
+					});
+				};
+				document.getElementById('exportResult1').onclick = () => exportToImage('resultSection', '丹药');
+
+				// ===== 挂机收益计算 =====
+				document.getElementById('calculateMode1Btn').onclick = function() {
+					let cur = getRaw('currentPower2', 'currentUnit2'),
+						tar = getRaw('targetPower2', 'targetUnit2');
+
+					if (isNaN(cur) || isNaN(tar)) {
+						alert('请输入有效的战力数值');
+						return;
+					}
+					if (tar <= cur) {
+						alert('目标战力必须大于当前战力');
+						return;
+					}
+
+					let talent = document.getElementById('talentLevel').value === 'true';
+					let res = calculatePoolTime(cur, tar, talent, document.getElementById('initialGrowthRate').value);
+
+					document.getElementById('poolResult').innerHTML =
+						`所需时间: ${res.days}天 ${res.hours}时 ${res.minutes}分 ${res.seconds}秒`;
+					document.getElementById('resultSection2').style.display = 'block';
+				};
+
+				document.getElementById('calculateMode2Btn').onclick = function() {
+					let cur = getRaw('currentPower2b', 'currentUnit2b');
+
+					if (isNaN(cur)) {
+						alert('请输入有效的当前战力');
+						return;
+					}
+
+					let days = parseInt(document.getElementById('days2').value) || 0,
+						hours = parseInt(document.getElementById('hours2').value) || 0,
+						mins = parseInt(document.getElementById('minutes2').value) || 0;
+					let totalSec = days * 86400 + hours * 3600 + mins * 60;
+
+					if (totalSec <= 0) {
+						alert('请输入有效的挂机时长');
+						return;
+					}
+
+					let talent = document.getElementById('talentLevel2').value === 'true';
+					let power = calculatePoolPower(cur, totalSec, talent, document.getElementById('initialGrowthRate2')
+						.value);
+
+					document.getElementById('poolResult').innerHTML = `到达战力: ${formatPower(power)}`;
+					document.getElementById('resultSection2').style.display = 'block';
+				};
+
+				document.getElementById('copyResult2').onclick = () => {
+					let resultText = document.getElementById('poolResult').innerText;
+					navigator.clipboard.writeText('挂机结果：' + resultText).then(() => {
+						alert('✅ 复制成功！');
+					}).catch(() => {
+						alert('❌ 复制失败，请手动复制');
+					});
+				};
+				document.getElementById('exportResult2').onclick = () => exportToImage('resultSection2', '挂机');
+
+				// ===== 无极魔丹计算 =====
+				document.getElementById('calculateFunction3Btn').onclick = function() {
+					let cur = getRaw('currentPower3', 'currentUnit3'),
+						tar = getRaw('targetPower3', 'targetUnit3');
+					if (tar <= cur) {
+						alert('目标需更高');
+						return;
+					}
+					let n = Math.ceil(Math.log(tar / cur) / Math.log(1.0001));
+					document.getElementById('wujiResult').innerHTML =
+						`所需无极魔丹: <span style="color:#ff6b6b;font-size:28px;">${n.toLocaleString()}</span> 颗`;
+					document.getElementById('resultSection3').style.display = 'block';
+				};
+				document.getElementById('calculateFunction3bBtn').onclick = function() {
+					let cur = getRaw('currentPower3b', 'currentUnit3b');
+					let cnt = parseInt(document.getElementById('wujiPillsCount').value) || 0;
+					let res = cur * Math.pow(1.0001, cnt);
+					document.getElementById('wujiResult').innerHTML = `吃丹后战力: ${formatPower(res)}`;
+					document.getElementById('resultSection3').style.display = 'block';
+				};
+				document.getElementById('copyResult3').onclick = () => {
+					navigator.clipboard.writeText('无极魔丹：' + document.getElementById('wujiResult').innerText);
+					alert('已复制');
+				};
+				document.getElementById('exportResult3').onclick = () => exportToImage('resultSection3', '无极魔丹');
+
+				// ===== 属性丹计算 =====
+				document.getElementById('calculateFunction4Btn').onclick = function() {
+					let baseHp = getRaw('baseHealth4', 'baseHealthUnit4'),
+						baseAtk = getRaw('baseAttack4', 'baseAttackUnit4');
+
+					if (baseHp === 0 && baseAtk === 0) {
+						alert('请输入基础生命和基础攻击的数值');
+						return;
+					}
+
+					let hb = (parseFloat(document.getElementById('healthBonus4').value) || 0) / 100;
+					let hu = (parseFloat(document.getElementById('healthIncrease4').value) || 0) / 100;
+					let ha = (parseFloat(document.getElementById('healthAmplify4').value) || 0) / 100;
+					let hs = (parseFloat(document.getElementById('healthSublime4').value) || 0) / 100;
+					let ab = (parseFloat(document.getElementById('attackBonus4').value) || 0) / 100;
+					let au = (parseFloat(document.getElementById('attackIncrease4').value) || 0) / 100;
+					let aa = (parseFloat(document.getElementById('attackAmplify4').value) || 0) / 100;
+					let asu = (parseFloat(document.getElementById('attackSublime4').value) || 0) / 100;
+
+					let curHp = baseHp * (1 + hb) * (1 + hu) * (1 + ha) * (1 + hs);
+					let curAtk = baseAtk * (1 + ab) * (1 + au) * (1 + aa) * (1 + asu);
+					let curPower = curHp + 5 * curAtk;
+					let target = getRaw('targetPower4', 'targetUnit4');
+
+					if (target <= curPower) {
+						alert('目标需大于当前战力');
+						return;
+					}
+
+					let rate = parseFloat(document.getElementById('attributePillType').value);
+					let n = Math.ceil(Math.log(target / curPower) / Math.log(1 + rate));
+
+					let pillTypeSelect = document.getElementById('attributePillType');
+					let pillTypeText = pillTypeSelect.options[pillTypeSelect.selectedIndex].text;
+
+					document.getElementById('attributeResult').innerHTML =
+						`当前战力: ${formatPower(curPower)}<br>` +
+						`使用丹药: ${pillTypeText}<br>` +
+						`所需属性丹: <span style="color:#b388ff;font-size:28px;">${n.toLocaleString()}</span> 颗`;
+					document.getElementById('resultSection4').style.display = 'block';
+				};
+				document.getElementById('copyResult4').onclick = () => {
+					navigator.clipboard.writeText('属性丹：' + document.getElementById('attributeResult').innerText);
+					alert('已复制');
+				};
+				document.getElementById('exportResult4').onclick = () => exportToImage('resultSection4', '属性丹');
+
+				// ===== 战力上限计算 =====
+				document.getElementById('calculateFunction5Btn').onclick = function() {
+					let baseHp = getRaw('baseHealth5', 'baseHealthUnit5'),
+						baseAtk = getRaw('baseAttack5', 'baseAttackUnit5');
+					let hb = (parseFloat(document.getElementById('healthBonus5').value) || 0) / 100;
+					let hu = (parseFloat(document.getElementById('healthIncrease5').value) || 0) / 100;
+					let ha = (parseFloat(document.getElementById('healthAmplify5').value) || 0) / 100;
+					let hs = (parseFloat(document.getElementById('healthSublime5').value) || 0) / 100;
+					let ab = (parseFloat(document.getElementById('attackBonus5').value) || 0) / 100;
+					let au = (parseFloat(document.getElementById('attackIncrease5').value) || 0) / 100;
+					let aa = (parseFloat(document.getElementById('attackAmplify5').value) || 0) / 100;
+					let asu = (parseFloat(document.getElementById('attackSublime5').value) || 0) / 100;
+
+					let hp = baseHp * (1 + hb) * (1 + hu) * (1 + ha) * (1 + hs);
+					let atk = baseAtk * (1 + ab) * (1 + au) * (1 + aa) * (1 + asu);
+					let total = hp + 5 * atk;
+					document.getElementById('powerLimitResult').innerHTML =
+						`面板生命: ${formatPower(hp)}<br>面板攻击: ${formatPower(atk)}<br>总战力: <span style="color:#81c784;font-size:28px;">${formatPower(total)}</span>`;
+					document.getElementById('resultSection5').style.display = 'block';
+				};
+				document.getElementById('copyResult5').onclick = () => {
+					navigator.clipboard.writeText('战力上限：' + document.getElementById('powerLimitResult').innerText);
+					alert('已复制');
+				};
+				document.getElementById('exportResult5').onclick = () => exportToImage('resultSection5', '战力上限');
+
+				const settingsBtn = document.getElementById('settingsBtn'),
+					settingsPanel = document.getElementById('settingsPanel');
+				settingsBtn.onclick = () => settingsPanel.classList.toggle('active');
+				document.getElementById('bgUpload').onchange = function(e) {
+					const file = e.target.files[0];
+					if (file) {
+						const reader = new FileReader();
+						reader.onload = ev => document.body.style.backgroundColor = '#0f0f1a';
+						reader.readAsDataURL(file);
+					}
+				};
+				document.querySelectorAll('.bg-option').forEach(opt => {
+					opt.onclick = function() {
+						document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
+						this.classList.add('active');
+						document.body.style.backgroundColor = this.style.background;
+					};
+				});
+				document.getElementById('resetBgBtn').onclick = () => {
+					document.body.style.backgroundColor = '#0f0f1a';
+					document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
+					document.querySelector('.bg-option').classList.add('active');
+				};
+
+				function hideAllContent(showId) {
+					document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+					document.getElementById(showId).classList.add('active');
+				}
+
+				function initCanvas() {
+					const canvas = document.getElementById('bg-canvas');
+					if (!canvas) return;
+					const ctx = canvas.getContext('2d');
+					let w, h;
+
+					function resize() {
+						w = window.innerWidth;
+						h = window.innerHeight;
+						canvas.width = w;
+						canvas.height = h;
+					}
+					window.addEventListener('resize', resize);
+					resize();
+					let particles = [];
+					for (let i = 0; i < 25; i++) particles.push({
+						x: Math.random() * w,
+						y: Math.random() * h,
+						sp: 0.1 + Math.random() * 0.2,
+						size: 1 + Math.random() * 2,
+						op: 0.1 + Math.random() * 0.2,
+						col: '255,215,0'
+					});
+
+					function anim() {
+						ctx.clearRect(0, 0, w, h);
+						particles.forEach(p => {
+							p.y -= p.sp;
+							if (p.y < -10) {
+								p.y = h + 10;
+								p.x = Math.random() * w;
+							}
+							ctx.beginPath();
+							ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+							ctx.fillStyle = `rgba(${p.col}, ${p.op})`;
+							ctx.fill();
+						});
+						requestAnimationFrame(anim);
+					}
+					anim();
+				}
+			};
+		</script>
+	</body>
+</html>
