@@ -745,8 +745,7 @@
 					<p><span style="color:#ffbc5e;">1.</span> 丹药数量计算</p>
 					<p><span style="color:#ffbc5e;">2.</span> 挂机池收益计算</p>
 					<p><span style="color:#ffbc5e;">3.</span> 无极魔丹计算</p>
-					<p><span style="color:#ffbc5e;">4.</span> 属性丹计算 · 含升华</p>
-					<p><span style="color:#ffbc5e;">5.</span> 战力上限计算 · 含升华</p>
+					<p><span style="color:#ffbc5e;">4.</span> 战力上限计算 · 含升华</p>
 					<!-- <p><span style="color:#ffbc5e;">⚡</span> 新: 无限进位 (每满10倍指数+1)</p> -->
 					<div class="group-card">
 						<div class="group-info">
@@ -788,7 +787,6 @@
 					<button class="function-btn" data-function="function1">💊 丹药数量</button>
 					<button class="function-btn" data-function="function2">⏳ 挂机收益</button>
 					<button class="function-btn" data-function="function3">👿 无极魔丹</button>
-					<button class="function-btn" data-function="function4">⚡ 属性丹·升华</button>
 					<button class="function-btn" data-function="function5">📊 战力上限·升华</button>
 				</div>
 				<button class="btn back-btn" id="backToMain" style="width:100%; margin-top:20px;">返回主界面</button>
@@ -816,7 +814,7 @@
 					<div class="dual-column">
 						<div class="input-group"><label>丹药类型</label>
 							<select id="danType" onchange="updateDanLevels()">
-								<option value="灵丹">灵丹</option>
+								<option value="灵丹" selected>灵丹</option>
 								<option value="仙丹">仙丹</option>
 								<option value="魔丹">魔丹</option>
 								<option value="神丹">神丹</option>
@@ -963,120 +961,44 @@
 				<button class="btn back-btn" id="backToSelector3" style="width:100%; margin-top:20px;">返回功能选择</button>
 			</div>
 
-			<!-- ===== 功能4：属性丹计算（独立）===== -->
-			<div class="content" id="function4Content">
-				<div class="section-title">⚡ 属性丹 · 完整计算（含升华）</div>
-				<div class="calc-section">
-					<div class="dual-column">
-						<div>
-							<h4 class="text-yellow-400 mb-2">❤️ 生命</h4>
-							<div class="input-group"><label>基础生命</label><input type="text" id="baseHealth4" value="0">
-							</div>
-							<div class="input-group"><label>单位</label><select id="baseHealthUnit4"
-									class="unit-select"></select></div>
-							<div class="input-group"><label>加成%</label><input type="number" id="healthBonus4" value="0">
-							</div>
-							<div class="input-group"><label>提升%</label><input type="number" id="healthIncrease4"
-									value="0"></div>
-							<div class="input-group"><label>增幅%</label><input type="number" id="healthAmplify4"
-									value="0"></div>
-							<div class="input-group"><label>升华%</label><input type="number" id="healthSublime4"
-									value="0"></div>
-						</div>
-						<div>
-							<h4 class="text-yellow-400 mb-2">⚔️ 攻击</h4>
-							<div class="input-group"><label>基础攻击</label><input type="text" id="baseAttack4" value="0">
-							</div>
-							<div class="input-group"><label>单位</label><select id="baseAttackUnit4"
-									class="unit-select"></select></div>
-							<div class="input-group"><label>加成%</label><input type="number" id="attackBonus4" value="0">
-							</div>
-							<div class="input-group"><label>提升%</label><input type="number" id="attackIncrease4"
-									value="0"></div>
-							<div class="input-group"><label>增幅%</label><input type="number" id="attackAmplify4"
-									value="0"></div>
-							<div class="input-group"><label>升华%</label><input type="number" id="attackSublime4"
-									value="0"></div>
-						</div>
-					</div>
-					<div class="dual-column" style="margin-top: 20px;">
-						<div class="input-group"><label>属性丹类型</label><select id="attributePillType">
-								<option value="0.03">混沌boss丹 +3%</option>
-								<option value="0.06">鸿蒙boss丹 +6%</option>
-								<option value="0.1">上品 +10%</option>
-								<option value="0.15">极品 +15%</option>
-								<option value="0.4">仙品 +40%</option>
-								<option value="0.7">圣品 +70%</option>
-								<option value="1.0">神王 +100%</option>
-								<option value="2.0">超级 +200%</option>
-							</select>
-						</div>
-						<div class="input-group" style="display: flex; gap: 10px; align-items: flex-end;">
-							<div style="flex: 2;">
-								<label>目标战力</label>
-								<input type="text" id="targetPower4" value="0">
-							</div>
-							<div style="flex: 1;">
-								<label>单位</label>
-								<select id="targetUnit4" class="unit-select"></select>
-							</div>
-						</div>
-					</div>
-					<button class="btn" id="calculateFunction4Btn" style="width:100%; margin-top: 20px;">⚗️
-						计算所需属性丹</button>
-				</div>
-				<div class="result" id="resultSection4" style="display: none;">
-					<div class="result-title">✨ 属性推演</div>
-					<div class="result-item" id="attributeResult"></div>
-					<div class="action-buttons"><button class="copy-btn" id="copyResult4">📋 复制</button><button
-							class="export-btn" id="exportResult4">🖼️ 导出</button></div>
-				</div>
-				<button class="btn back-btn" id="backToSelector4" style="width:100%; margin-top:20px;">返回功能选择</button>
-			</div>
-
 			<!-- ===== 功能5：战力上限（含升华）===== -->
 			<div class="content" id="function5Content">
 				<div class="section-title">📊 战力上限 · 完整计算（含升华）</div>
 				<div class="calc-section">
 					<div class="dual-column">
 						<div>
-							<h4 class="text-green-400">生命基础</h4>
-							<div class="input-group"><label>基础生命</label><input type="text" id="baseHealth5" value="0">
-							</div>
+							<h4 class="text-green-400" style="font-size:16px;">生命基础</h4>
+							<div class="input-group"><label>基础生命</label><input type="text" id="baseHealth5" value="0"
+									placeholder="例: 0"></div>
 							<div class="input-group"><label>单位</label><select id="baseHealthUnit5"
 									class="unit-select"></select></div>
-							<div class="input-group"><label>加成%</label><input type="number" id="healthBonus5" value="0">
-							</div>
+							<div class="input-group"><label>加成%</label><input type="number" id="healthBonus5" value="0"
+									step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>提升%</label><input type="number" id="healthIncrease5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>增幅%</label><input type="number" id="healthAmplify5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>升华%</label><input type="number" id="healthSublime5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 						</div>
 						<div>
-							<h4 class="text-green-400">攻击基础</h4>
-							<div class="input-group"><label>基础攻击</label><input type="text" id="baseAttack5" value="0">
-							</div>
+							<h4 class="text-green-400" style="font-size:16px;">攻击基础</h4>
+							<div class="input-group"><label>基础攻击</label><input type="text" id="baseAttack5" value="0"
+									placeholder="例: 0"></div>
 							<div class="input-group"><label>单位</label><select id="baseAttackUnit5"
 									class="unit-select"></select></div>
-							<div class="input-group"><label>加成%</label><input type="number" id="attackBonus5" value="0">
-							</div>
+							<div class="input-group"><label>加成%</label><input type="number" id="attackBonus5" value="0"
+									step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>提升%</label><input type="number" id="attackIncrease5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>增幅%</label><input type="number" id="attackAmplify5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 							<div class="input-group"><label>升华%</label><input type="number" id="attackSublime5"
-									value="0">
-							</div>
+									value="0" step="0.01" placeholder="0"></div>
 						</div>
 					</div>
-					<button class="btn" id="calculateFunction5Btn" style="width:100%;">📈 计算战力上限</button>
+					<button class="btn" id="calculateFunction5Btn" style="width:100%; margin-top:15px;">📈
+						计算战力上限</button>
 				</div>
 				<div class="result" id="resultSection5" style="display: none;">
 					<div class="result-title">✨ 战力推演</div>
@@ -1084,7 +1006,7 @@
 					<div class="action-buttons"><button class="copy-btn" id="copyResult5">📋 复制</button><button
 							class="export-btn" id="exportResult5">🖼️ 导出</button></div>
 				</div>
-				<button class="btn back-btn" id="backToSelector5" style="width:100%; margin-top:20px;">返回功能选择</button>
+				<button class="btn back-btn" id="backToSelector5" style="width:100%; margin-top:15px;">返回功能选择</button>
 			</div>
 
 			<div class="copyright">
@@ -1092,27 +1014,13 @@
 			</div>
 		</div>
 
-		<!-- 设置按钮 & 面板 -->
-		<button class="settings-btn" id="settingsBtn">⚙️</button>
-		<div class="settings-panel" id="settingsPanel">
-			<div class="settings-title">⚙️ 个性化设置</div>
-			<div class="settings-option"><label>上传背景</label><input type="file" id="bgUpload" accept="image/*"></div>
-			<div class="settings-option">
-				<label>默认背景</label>
-				<div class="default-bg-options" style="display:flex; gap:8px;">
-					<div class="bg-option active" data-bg="dark1" style="background: #1a1a2e;"></div>
-					<div class="bg-option" data-bg="dark2" style="background: #16213e;"></div>
-					<div class="bg-option" data-bg="dark3" style="background: #0f0f1a;"></div>
-					<div class="bg-option" data-bg="dark4" style="background: #1e1e2f;"></div>
-					<div class="bg-option" data-bg="dark5" style="background: #2a2a3a;"></div>
-				</div>
-			</div>
-			<button class="btn" id="resetBgBtn" style="width:100%; padding:10px;">重置背景</button>
-		</div>
-
 		<script>
 			// ==================== ★ 全局数据与工具函数（无限科学计数法）★ ====================
 			const units = [{
+					name: '无单位',
+					val: 0
+				},
+				{
 					name: '万',
 					val: 1e4
 				},
@@ -1202,30 +1110,32 @@
 
 				let value = valueStr.toString().trim();
 				let num = 0;
+				let appliedUnit = true;
 
 				// 处理格式：1.00E无敌+76
 				const match = value.match(/^([0-9.]+)E(无敌|御天)\+(\d+)$/);
 				if (match) {
 					let coefficient = parseFloat(match[1]);
-					let unit = match[2];
 					let exponent = parseInt(match[3]);
 					num = coefficient * Math.pow(10, exponent);
+					appliedUnit = false;
 					return num;
 				}
 
-				// 处理科学计数法格式：1.48E+78 或 1.48E78
-				if (value.includes('E+') || value.includes('E')) {
-					let parts = value.split('E');
+				// 处理科学计数法格式：1.48E+78 或 1.48E78（已是绝对值，不再乘单位）
+				if (/[eE][+-]?\d/.test(value)) {
+					let parts = value.split(/[eE]/);
 					let coefficient = parseFloat(parts[0]);
 					let exponent = parseInt(parts[1].replace('+', ''));
 					num = coefficient * Math.pow(10, exponent);
+					appliedUnit = false;
 				}
 				// 处理普通数字
 				else {
 					num = parseFloat(value) || 0;
 				}
 
-				// 乘以单位（如果输入的是普通数字+单位下拉框）
+				if (!appliedUnit) return num;
 				let unitVal = parseFloat(unitStr) || 1;
 				return num * unitVal;
 			}
@@ -1237,9 +1147,21 @@
 				return parsePowerValue(valueStr, unitStr);
 			}
 
+			// 浮点边界上系数≥10000 时不再递归 formatPower（会死循环），改用 E无敌+ 表示
+			function formatPowerAsWuDiE(num) {
+				let exponent = Math.floor(Math.log10(num));
+				let coefficient = num / Math.pow(10, exponent);
+				while (coefficient >= 10) {
+					coefficient /= 10;
+					exponent++;
+				}
+				return coefficient.toFixed(2) + 'E无敌+' + exponent;
+			}
+
 			// ★★★ 无限科学计数法格式化函数 ★★★
 			function formatPower(num) {
 				if (num === 0) return '0';
+				if (!isFinite(num) || num < 0) return String(num);
 
 				// 处理 >= 御天 (1e100)
 				if (num >= 1e100) {
@@ -1273,7 +1195,7 @@
 				if (num >= 1e72) {
 					let dashuVal = num / 1e72;
 					if (dashuVal >= 10000) {
-						return formatPower(num);
+						return formatPowerAsWuDiE(num);
 					}
 					return dashuVal.toFixed(2) + '大数';
 				}
@@ -1282,7 +1204,7 @@
 				if (num >= 1e68) {
 					let wuliangVal = num / 1e68;
 					if (wuliangVal >= 10000) {
-						return formatPower(num);
+						return formatPowerAsWuDiE(num);
 					}
 					return wuliangVal.toFixed(2) + '无量';
 				}
@@ -1290,7 +1212,7 @@
 				if (num >= 1e64) {
 					let bukesiyiVal = num / 1e64;
 					if (bukesiyiVal >= 10000) {
-						return formatPower(num);
+						return formatPowerAsWuDiE(num);
 					}
 					return bukesiyiVal.toFixed(2) + '不可思议';
 				}
@@ -1300,9 +1222,6 @@
 					const unitVal = units[i].val;
 					if (num >= unitVal) {
 						const value = num / unitVal;
-						if (value >= 1000 && i < units.length - 1) {
-							return formatPower(num);
-						}
 						return value.toFixed(2).replace(/\.0+$/, '') + units[i].name;
 					}
 				}
@@ -1543,13 +1462,13 @@
 					level: 6,
 					attack: "1200兆"
 				}, {
-					"type": "毁灭",
-					"level": 7,
-					"attack": "0.2京"
+					type: "毁灭",
+					level: 7,
+					attack: "0.2京"
 				}, {
-					"type": "毁灭",
-					"level": 8,
-					"attack": "0.4京"
+					type: "毁灭",
+					level: 8,
+					attack: "0.4京"
 				}, {
 					type: "造化丹",
 					level: 1,
@@ -1578,8 +1497,7 @@
 					type: "造化丹",
 					level: 7,
 					attack: "480京"
-				},
-				{
+				}, {
 					type: "仙蕴丹",
 					level: 1,
 					attack: "0.288垓"
@@ -1611,8 +1529,7 @@
 					type: "仙蕴丹",
 					level: 8,
 					attack: "498垓"
-				},
-				{
+				}, {
 					type: "仙蕴丹",
 					level: 9,
 					attack: "0.248秭"
@@ -1632,8 +1549,7 @@
 					type: "仙蕴丹",
 					level: 13,
 					attack: "995秭"
-				},
-				{
+				}, {
 					type: "圣墟丹",
 					level: 1,
 					attack: "0.995秭"
@@ -1674,12 +1590,12 @@
 
 			function parseAttackToBase(attackStr) {
 				if (!attackStr) return 0;
-				const match = attackStr.match(/^([0-9.]+)([万亿兆京垓秭穰沟涧正载极恒河沙阿僧祗那由他不可思议无量大数无敌御天]?)$/);
+				const match = attackStr.match(/^([0-9.]+)([无单位万亿兆京垓秭穰沟涧正载极恒河沙阿僧祗那由他不可思议无量大数无敌御天]?)$/);
 				if (!match) return parseFloat(attackStr) || 0;
 				const num = parseFloat(match[1]),
 					unit = match[2];
 				const unitToWan = {
-					'': 10000,
+					'无单位': 0,
 					'万': 10000,
 					'亿': 1e8,
 					'兆': 1e12,
@@ -1723,7 +1639,7 @@
 
 			function initUnitSelects() {
 				const selects = document.querySelectorAll(
-					'.unit-select, #currentUnit, #targetUnit, #currentUnit2, #targetUnit2, #currentUnit2b, #currentUnit3, #targetUnit3, #currentUnit3b, #baseHealthUnit4, #baseAttackUnit4, #targetUnit4, #baseHealthUnit5, #baseAttackUnit5'
+					'.unit-select, #currentUnit, #targetUnit, #currentUnit2, #targetUnit2, #currentUnit2b, #currentUnit3, #targetUnit3, #currentUnit3b, #baseHealthUnit5, #baseAttackUnit5'
 				);
 				const html = units.map(u => `<option value="${u.val}">${u.name}</option>`).join('');
 				selects.forEach(s => {
@@ -1821,7 +1737,7 @@
 				document.getElementById('contactBtn').onclick = () => window.open('https://qm.qq.com/q/EWuS3pj4gS',
 					'_blank');
 				document.getElementById('groupBtn').onclick = () => window.open('https://qm.qq.com/q/EWuS3pj4gS', '_blank');
-				document.getElementById('groupCtn').onclick = () => window.location.href = 'index-Dark.html';
+				document.getElementById('groupCtn').onclick = () => window.location.href = 'index.html';
 				document.getElementById('backToMain').onclick = () => hideAllContent('functionSelector');
 
 				document.querySelectorAll('.function-btn').forEach(btn => {
@@ -1830,8 +1746,10 @@
 						hideAllContent(id + 'Content');
 					};
 				});
-				for (let i = 1; i <= 5; i++) document.getElementById(`backToSelector${i}`).onclick = () => hideAllContent(
-					'functionSelector');
+				for (let i = 1; i <= 5; i++) {
+					const backBtn = document.getElementById(`backToSelector${i}`);
+					if (backBtn) backBtn.onclick = () => hideAllContent('functionSelector');
+				}
 
 				document.querySelectorAll('#function2Content .mode-btn').forEach((btn) => {
 					btn.onclick = function() {
@@ -1878,6 +1796,10 @@
 
 					// 计算实际单颗增加值（吃丹收益加成）
 					let actualValue = baseValue * (1 + bonus / 100);
+					if (actualValue <= 0) {
+						alert('丹药收益需大于 0，请检查丹药等级和收益加成');
+						return;
+					}
 
 					// 计算所需数量
 					const diff = tar - cur;
@@ -1987,6 +1909,10 @@
 				document.getElementById('calculateFunction3Btn').onclick = function() {
 					let cur = getRaw('currentPower3', 'currentUnit3'),
 						tar = getRaw('targetPower3', 'targetUnit3');
+					if (cur <= 0) {
+						alert('当前战力必须大于 0');
+						return;
+					}
 					if (tar <= cur) {
 						alert('目标需更高');
 						return;
@@ -1999,6 +1925,10 @@
 				document.getElementById('calculateFunction3bBtn').onclick = function() {
 					let cur = getRaw('currentPower3b', 'currentUnit3b');
 					let cnt = parseInt(document.getElementById('wujiPillsCount').value) || 0;
+					if (cur <= 0) {
+						alert('当前战力必须大于 0');
+						return;
+					}
 					let res = cur * Math.pow(1.0001, cnt);
 					document.getElementById('wujiResult').innerHTML = `吃丹后战力: ${formatPower(res)}`;
 					document.getElementById('resultSection3').style.display = 'block';
@@ -2008,53 +1938,6 @@
 					alert('已复制');
 				};
 				document.getElementById('exportResult3').onclick = () => exportToImage('resultSection3', '无极魔丹');
-
-				// ===== 属性丹计算 =====
-				document.getElementById('calculateFunction4Btn').onclick = function() {
-					let baseHp = getRaw('baseHealth4', 'baseHealthUnit4'),
-						baseAtk = getRaw('baseAttack4', 'baseAttackUnit4');
-
-					if (baseHp === 0 && baseAtk === 0) {
-						alert('请输入基础生命和基础攻击的数值');
-						return;
-					}
-
-					let hb = (parseFloat(document.getElementById('healthBonus4').value) || 0) / 100;
-					let hu = (parseFloat(document.getElementById('healthIncrease4').value) || 0) / 100;
-					let ha = (parseFloat(document.getElementById('healthAmplify4').value) || 0) / 100;
-					let hs = (parseFloat(document.getElementById('healthSublime4').value) || 0) / 100;
-					let ab = (parseFloat(document.getElementById('attackBonus4').value) || 0) / 100;
-					let au = (parseFloat(document.getElementById('attackIncrease4').value) || 0) / 100;
-					let aa = (parseFloat(document.getElementById('attackAmplify4').value) || 0) / 100;
-					let asu = (parseFloat(document.getElementById('attackSublime4').value) || 0) / 100;
-
-					let curHp = baseHp * (1 + hb) * (1 + hu) * (1 + ha) * (1 + hs);
-					let curAtk = baseAtk * (1 + ab) * (1 + au) * (1 + aa) * (1 + asu);
-					let curPower = curHp + 5 * curAtk;
-					let target = getRaw('targetPower4', 'targetUnit4');
-
-					if (target <= curPower) {
-						alert('目标需大于当前战力');
-						return;
-					}
-
-					let rate = parseFloat(document.getElementById('attributePillType').value);
-					let n = Math.ceil(Math.log(target / curPower) / Math.log(1 + rate));
-
-					let pillTypeSelect = document.getElementById('attributePillType');
-					let pillTypeText = pillTypeSelect.options[pillTypeSelect.selectedIndex].text;
-
-					document.getElementById('attributeResult').innerHTML =
-						`当前战力: ${formatPower(curPower)}<br>` +
-						`使用丹药: ${pillTypeText}<br>` +
-						`所需属性丹: <span style="color:#b388ff;font-size:28px;">${n.toLocaleString()}</span> 颗`;
-					document.getElementById('resultSection4').style.display = 'block';
-				};
-				document.getElementById('copyResult4').onclick = () => {
-					navigator.clipboard.writeText('属性丹：' + document.getElementById('attributeResult').innerText);
-					alert('已复制');
-				};
-				document.getElementById('exportResult4').onclick = () => exportToImage('resultSection4', '属性丹');
 
 				// ===== 战力上限计算 =====
 				document.getElementById('calculateFunction5Btn').onclick = function() {
@@ -2082,30 +1965,6 @@
 				};
 				document.getElementById('exportResult5').onclick = () => exportToImage('resultSection5', '战力上限');
 
-				const settingsBtn = document.getElementById('settingsBtn'),
-					settingsPanel = document.getElementById('settingsPanel');
-				settingsBtn.onclick = () => settingsPanel.classList.toggle('active');
-				document.getElementById('bgUpload').onchange = function(e) {
-					const file = e.target.files[0];
-					if (file) {
-						const reader = new FileReader();
-						reader.onload = ev => document.body.style.backgroundColor = '#0f0f1a';
-						reader.readAsDataURL(file);
-					}
-				};
-				document.querySelectorAll('.bg-option').forEach(opt => {
-					opt.onclick = function() {
-						document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
-						this.classList.add('active');
-						document.body.style.backgroundColor = this.style.background;
-					};
-				});
-				document.getElementById('resetBgBtn').onclick = () => {
-					document.body.style.backgroundColor = '#0f0f1a';
-					document.querySelectorAll('.bg-option').forEach(o => o.classList.remove('active'));
-					document.querySelector('.bg-option').classList.add('active');
-				};
-
 				function hideAllContent(showId) {
 					document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
 					document.getElementById(showId).classList.add('active');
@@ -2126,13 +1985,13 @@
 					window.addEventListener('resize', resize);
 					resize();
 					let particles = [];
-					for (let i = 0; i < 25; i++) particles.push({
+					for (let i = 0; i < 35; i++) particles.push({
 						x: Math.random() * w,
 						y: Math.random() * h,
-						sp: 0.1 + Math.random() * 0.2,
+						sp: 0.2 + Math.random(),
 						size: 1 + Math.random() * 2,
-						op: 0.1 + Math.random() * 0.2,
-						col: '255,215,0'
+						op: 0.1 + Math.random() * 0.3,
+						col: Math.random() > 0.5 ? '255,215,0' : '0,212,255'
 					});
 
 					function anim() {
