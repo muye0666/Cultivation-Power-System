@@ -2,7 +2,7 @@
   在 Markdown 文件中实现“牛逼跳转” —— 由于 .md 文件本身无法执行脚本，
   本模块提供一个 炫酷 HTML 容器 + 自动/手动双模式跳转 + 视觉特效。
   将此完整代码块嵌入 README.md（若 Markdown 渲染器支持 HTML 显示），
-  即可呈现一个高能跃迁面板，点击或倒计时结束后跳转至 index-Dark.html。
+  即可呈现一个高能跃迁面板，点击或倒计时结束后跳转至 木叶吃丹修仙助手。
   
   使用说明：
   1. 将下方整个代码块复制到 README.md 合适位置。
@@ -87,7 +87,7 @@
         自动跳转 <span id="md_countdown_num" style="color: #0ff; font-weight: bold;">3</span> s
       </div>
     </div>
-    <div style="font-size: 0.65rem; color: #2f6f7a; margin-top: 16px;">⚙️ 力量系统 v.∞ · 空间锚点已锁定 | 目标：index-Dark.html</div>
+    <div style="font-size: 0.65rem; color: #2f6f7a; margin-top: 16px;">⚙️ 力量系统 v.∞ · 空间锚点已锁定 | 目标：木叶吃丹修仙助手</div>
 
   </div>
 </div>
