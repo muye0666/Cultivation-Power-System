@@ -61,7 +61,7 @@
     <!-- 目标地址展示 -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; background: #00000044; border-radius: 80px; padding: 6px 18px; margin: 16px 0;">
       <span style="color: #aaf;">🎯 目标索引 :</span>
-      <code style="background: #0a161f; padding: 4px 14px; border-radius: 40px; color: #0ff; border: 1px solid cyan;">index-Dark.html</code>
+      <code style="background: #0a161f; padding: 4px 14px; border-radius: 40px; color: #0ff; border: 1px solid cyan;">木叶吃丹修仙助手</code>
       <span style="color: #0fa;">🌑 暗界领域</span>
     </div>
 
